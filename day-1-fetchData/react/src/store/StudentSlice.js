@@ -11,6 +11,10 @@ const studentSlice = createSlice({
         builder.addCase(fetchData.pending,(state)=>{
             state.status = "loading";
         })
+
+        .addCase(fetchData.fulfilled, (state, action) => {
+                (state.status = "success"), (state.list = action.payload);
+      })
         .addCase(addData.fulfilled,(state,action)=>{
 
             state.list.push(action.payload)
