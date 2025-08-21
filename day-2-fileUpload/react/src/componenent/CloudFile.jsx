@@ -1,17 +1,50 @@
-import React from 'react'
+import React, { useState } from "react";
 
 const CloudFile = () => {
+  const [file, setFile] = useState([]);
+
+  const handleFileupload = async (e) => {
+    const selectedFile = e.target.files[0];
+
+    if (!selectedFile) {
+      return;
+    }
+
+    const data = new FormData();
+    data.append("file", selectedFile);
+    data.append("upload_preset", "file_cloudinary");
+    data.append("cloud_name", "dwjpigpnm");
+
+    try {
+      const res = await fetch(
+        "https://api.cloudinary.com/v1_1/dwjpigpnm/image/upload",
+        {
+          method: "POST",
+          body: data,
+        }
+      );
+
+      const uploadData = await res.json();
+
+      console.log("upload", uploadData.url);
+
+      setFile((prev) => [...prev, uploadData]);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <>
+      <input type="file" onChange={handleFileupload} />
+      <button>upload</button>
 
-  <div className='max-w-7xl p-5'>
-        <label class=" mb-2 text-sm font-medium text-gray-900 dark:text-white" for="multiple_files">Upload multiple files</label>
-        <input class="w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" id="multiple_files" type="file" multiple />
-
-  </div>
-
+      <br />
+      {file.map((f, index) => (
+        <img key={index} src={f.url} alt={`file-${index}`} width="200" />
+      ))}
     </>
-  )
-}
+  );
+};
 
-export default CloudFile
+export default CloudFile;

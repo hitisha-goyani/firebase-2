@@ -1,6 +1,7 @@
 
 import './App.css'
 import CloudFile from './componenent/CloudFile'
+import SignupWithPopup from './componenent/SignupWithPopup'
 
 function App() {
  
@@ -8,6 +9,7 @@ function App() {
   return (
     <>
     <CloudFile/>
+    <SignupWithPopup/>
     </>
   )
 }
